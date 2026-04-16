@@ -5,6 +5,15 @@ Official implementation of  **Semantic Visual Anomaly Detection and Reasoning in
 This repository contains the code, dataset interface, and evaluation tools for semantic-level anomaly detection and reasoning in AI-generated images.
 
 ---
+## 📰 News
+
+- [2026-04] 🎉 We release the **AnomReason** dataset. [[Download link](https://drive.google.com/drive/folders/1jsDFvnJkKrl2cr2cWDhj3K_exzh9W8ey?usp=sharing)]
+- [2026-04] 🚀 We release the code for **AnomAgent**.
+- [2026-04] 📊 We introduce a new semantic matching metric: **SemAP** and **SemF1**.
+- [Coming Soon] 🔧 Training and evaluation pipelines will be released.
+
+---
+
 
 ## Overview
 
@@ -23,35 +32,9 @@ Each anomaly is represented as a structured quadruple:
 - **Reasoning**: why it violates commonsense or logic  
 - **Severity**: anomaly severity score  
 
----
-
-## Repository Structure
-
-```
-.
-├── anomagent/
-├── anomreason/
-├── metrics/
-├── scripts/
-│   ├── annotate/
-│   ├── train/
-│   └── eval/
-├── examples/
-├── docs/
-└── README.md
-```
 
 ---
 
-## Installation
-
-```bash
-conda create -n anomreason python=3.10 -y
-conda activate anomreason
-pip install -r requirements.txt
-```
-
----
 
 ## Dataset: AnomReason
 
@@ -65,8 +48,7 @@ pip install -r requirements.txt
 
 ```json
 {
-  "image_id": "xxx",
-  "anomalies": [
+  "image_id": [
     {
       "name": "Missing safety harness",
       "phenomenon": "...",
@@ -77,28 +59,26 @@ pip install -r requirements.txt
 }
 ```
 
-Dataset download links will be released.
-
 ---
 
 ## Running AnomAgent
 
 ```bash
-python scripts/annotate/run_anomagent.py \
-  --input_dir data/images/test \
-  --output outputs/anomagent_results.jsonl
+cd AnomAgent
+python3 -m anomagent --input path/to/image_or_dir --output-dir outputs
 ```
 
 ---
 
 ## Evaluation
-
-Semantic anomaly detection and reasoning are evaluated using **SemAP** and **SemF1**, based on semantic similarity matching.
-
 ```bash
-python scripts/eval/eval_semantic.py \
-  --pred outputs/anomagent_results.jsonl \
-  --gt data/anomreason/test.jsonl
+cd SemAP_SemF1
+CUDA_VISIBLE_DEVICES=0 python3 semap_semf1_metric.py \
+  --pred_json /path/to/preds.json \
+  --gt_json /path/to/ground_truth.json \
+  --thresholds 0.7,0.8,0.9 \
+  --alpha 0.5 \
+  --use_gpu
 ```
 
 ---
@@ -106,9 +86,7 @@ python scripts/eval/eval_semantic.py \
 ## Training
 
 ```bash
-python scripts/train/train_lora.py \
-  --train data/anomreason/train.jsonl \
-  --output checkpoints/exp_name
+
 ```
 
 ---
