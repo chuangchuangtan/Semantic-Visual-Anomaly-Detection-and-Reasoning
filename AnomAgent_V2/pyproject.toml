@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anomagent-v2"
+version = "2.0.0"
+description = "AnomAgent V2: agent-ified semantic anomaly detection and reasoning for AI-generated images"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "openai>=1.40.0",
+    "Pillow>=9.0.0",
+    "python-dotenv>=1.0.0",
+    "tqdm>=4.60.0",
+]
+
+[project.scripts]
+anomagent_v2 = "anomagent_v2.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["anomagent_v2*"]
